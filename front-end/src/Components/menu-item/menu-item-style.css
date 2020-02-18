@@ -1,0 +1,39 @@
+.menu-item {
+    color: white;
+    min-width: 30%;
+    height: 240px;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid white;
+    margin: 0 7.5px 15px;
+    justify-content: center;
+    background-position: center;
+    background-size: cover;    
+    
+}
+
+.menu-item .content {
+    height: 90px;
+    padding: 0 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid white;
+    
+}
+
+.menu-item .content .title {
+    font-weight: bold;
+    margin-bottom: 6px;
+    font-size: 24px;
+    color: white;
+}
+
+.menu-item .content .title .subtitle {
+    font-weight: lighter;
+    font-size: 16px;
+
+}
