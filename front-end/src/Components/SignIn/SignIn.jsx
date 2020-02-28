@@ -3,6 +3,8 @@ import CustomInput from "../CustomInput/CustomInput";
 import CustomButton from "../CustomButton/CustomButton";
 import "./SignIn-style.css";
 
+import { signInWithGoogle } from "../FirebaseUtils/FirebaseUtils";
+
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
@@ -41,6 +43,7 @@ class SignIn extends React.Component {
             handleChange={this.handleChange}
             required
           />
+          <CustomButton onClick={signInWithGoogle}>GOOGLE Login</CustomButton>
           <CustomButton type="submit" label="submit" name="submit">
             SIGN IN
           </CustomButton>
