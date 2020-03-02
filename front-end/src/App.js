@@ -3,8 +3,11 @@ import "./App.css";
 import { Switch, BrowserRouter, Route } from "react-router-dom";
 import HomePage from "../src/Pages/homepage/homepage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
-
-import { auth } from "./Components/FirebaseUtils/FirebaseUtils";
+import Header from "./Components/header/header";
+import {
+  auth,
+  createUserProfileDocument
+} from "./Components/FirebaseUtils/FirebaseUtils";
 
 class App extends Component {
   constructor() {
@@ -16,9 +19,22 @@ class App extends Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({ currentuser: user });
-      console.log(user);
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+        userRef.onSnapshot(snapShot => {
+          this.setState(
+            {
+              currentUser: { id: snapShot.id, ...snapShot.data }
+            },
+            () => {
+              console.log(this.state.currentuser);
+            }
+          );
+        });
+      } else {
+        this.setState({ currentUser: userAuth });
+      }
     });
   }
 
@@ -29,6 +45,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
+          <Header currentUser={this.state.currentuser} />
           <Switch>
             <Route exact path="/home" component={HomePage} />
             <Route exact path="/login" component={LoginPage} />
