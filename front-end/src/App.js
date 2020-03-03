@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { Switch, BrowserRouter, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import HomePage from "../src/Pages/homepage/homepage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import Header from "./Components/header/header";
@@ -20,20 +20,23 @@ class App extends Component {
 
   componentDidMount() {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      //console.log(userAuth);
+
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
         userRef.onSnapshot(snapShot => {
           this.setState(
             {
-              currentUser: { id: snapShot.id, ...snapShot.data }
+              currentuser: { id: snapShot.id, ...snapShot.data() }
             },
             () => {
-              console.log(this.state.currentuser);
+              // console.log(this.state.currentuser);
             }
           );
         });
       } else {
-        this.setState({ currentUser: userAuth });
+        this.setState({ currentuser: userAuth });
+        // console.log(this.state.currentuser, userAuth);
       }
     });
   }
@@ -43,15 +46,13 @@ class App extends Component {
   }
   render() {
     return (
-      <BrowserRouter>
-        <div className="App">
-          <Header currentUser={this.state.currentuser} />
-          <Switch>
-            <Route exact path="/home" component={HomePage} />
-            <Route exact path="/login" component={LoginPage} />
-          </Switch>
-        </div>
-      </BrowserRouter>
+      <div className="App">
+        <Header currentuser={this.state.currentuser} />
+        <Switch>
+          <Route exact path="/home" component={HomePage} />
+          <Route exact path="/login" component={LoginPage} />
+        </Switch>
+      </div>
     );
   }
 }

@@ -4,7 +4,7 @@ import { ReactComponent as Logo } from "../../images/GrubHub_Logo.svg";
 import "./header-style.css";
 import { auth } from "../FirebaseUtils/FirebaseUtils";
 
-const Header = ({ currentUser }) => {
+const Header = thisprops => {
   return (
     <div className="header">
       <div className="logo">
@@ -19,8 +19,8 @@ const Header = ({ currentUser }) => {
         <Link to="cart" className="option">
           Cart
         </Link>
-
-        {currentUser ? (
+        {/* {console.log(thisprops)} */}
+        {thisprops.currentuser ? (
           <div className="option" onClick={() => auth.signOut()}>
             SIGN OUT
           </div>
