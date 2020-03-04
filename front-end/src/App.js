@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import HomePage from "../src/Pages/homepage/homepage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import Header from "./Components/header/header";
@@ -28,7 +28,7 @@ class App extends Component {
       } else {
         setCurrentUser(userAuth);
       }
-      console.log(userAuth);
+      // console.log(userAuth);
     });
   }
 
@@ -41,14 +41,24 @@ class App extends Component {
         <Header />
         <Switch>
           <Route exact path="/home" component={HomePage} />
-          <Route exact path="/login" component={LoginPage} />
+          <Route
+            exact
+            path="/login"
+            render={() =>
+              this.props.currentuser ? <Redirect to="/home" /> : <LoginPage />
+            }
+          />
         </Switch>
       </div>
     );
   }
 }
 
+const mapStateToProps = ({ user }) => ({
+  currentuser: user.currentuser
+});
+
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user))
 });
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
