@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../images/GrubHub_Logo.svg";
 import "./header-style.css";
 import { auth } from "../FirebaseUtils/FirebaseUtils";
+import { connect } from "react-redux";
 
-const Header = thisprops => {
+const Header = ({ currentuser }) => {
   return (
     <div className="header">
       <div className="logo">
@@ -19,14 +20,27 @@ const Header = thisprops => {
         <Link to="cart" className="option">
           Cart
         </Link>
-        {/* {console.log(thisprops)} */}
-        {thisprops.currentuser ? (
+        {/* if(currentuser)
+        {
           <div className="option" onClick={() => auth.signOut()}>
-            SIGN OUT
+            Hello
+            </div>
+        }
+        else
+        {
+          <div className="option" to="/login">
+            Sign In
+          </div>
+        } */}
+        {currentuser ? (
+          <div className="option" onClick={() => auth.signOut()}>
+            SignOut
+            {console.log(currentuser.currentuser)}
           </div>
         ) : (
           <Link className="option" to="/login">
-            SIGN IN{" "}
+            Sign In
+            {console.log(currentuser)}
           </Link>
         )}
       </div>
@@ -34,4 +48,8 @@ const Header = thisprops => {
   );
 };
 
-export default Header;
+const mapStateToProps = state => ({
+  currentuser: state.user.currentuser
+});
+
+export default connect(mapStateToProps, null)(Header);
